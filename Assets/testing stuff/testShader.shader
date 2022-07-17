@@ -1,4 +1,4 @@
-// Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
+// (stolen from) Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
 
 // Unlit shader. Simplest possible textured shader.
 // - no lighting
@@ -56,13 +56,20 @@ SubShader {
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 UNITY_OPAQUE_ALPHA(col.a);
                 uint r = col.r * 255.0;
-                r = r / 8 * 8;
-                col.r = (half)r / 255.0;
                 uint g = col.g * 255.0;
-                g = g / 8 * 8;
-                col.g = (half)g / 255.0;
                 uint b = col.b * 255.0;
+
+                uint grey = (r + g + b) / 3;
+                r = (r + grey) / 2;
+                g = (g + grey) / 2;
+                b = (b + grey) / 2;
+
+                r = r / 8 * 8;
+                g = g / 8 * 8;
                 b = b / 8 * 8;
+
+                col.r = (half)r / 255.0;
+                col.g = (half)g / 255.0;
                 col.b = (half)b / 255.0;
                 return col;
             }

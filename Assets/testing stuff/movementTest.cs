@@ -5,12 +5,22 @@ using UnityEngine;
 public class movementTest : MonoBehaviour
 {
     public float speed = 1.25f, rotSpeed = 2f;
+    public GameObject cam;
+    private Quaternion startRotation;
+
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        startRotation = cam.transform.rotation;
+    }
 
     void Update()
     {
-        transform.Translate(speed * Time.deltaTime * Input.GetAxis("Vertical"), 0f, 0f);
+        float dx = speed * Time.deltaTime * Input.GetAxis("Vertical");
+        float dy = speed * Time.deltaTime * Input.GetAxis("Horizontal");
+        transform.Translate(dx, dy, 0f);
         transform.Rotate(0f, 0f, Input.GetAxis("Mouse X") * rotSpeed);
 
-        Debug.Log(Input.GetAxis("Vertical"));
+        cam.transform.Rotate(-rotSpeed * Input.GetAxis("Mouse Y"), 0f, 0f);
     }
 }

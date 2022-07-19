@@ -11,6 +11,7 @@ public class movementTest : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         startRotation = cam.transform.rotation;
     }
 

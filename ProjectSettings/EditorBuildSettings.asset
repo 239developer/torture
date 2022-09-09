@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: a01704be7b7c1fd2a889b700d1a405cb
   - enabled: 1
-    path: Assets/testing stuff/other stuff/hanoi.unity
+    path: Assets/Not used/testing stuff/other stuff/hanoi.unity
     guid: c4bc69dc4991b6e1fbd358146be8870d
   m_configObjects: {}

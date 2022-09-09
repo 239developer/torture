@@ -5,7 +5,7 @@
 // - no lightmap support
 // - no per-material color
 
-Shader "testing stuff/testShader" {
+Shader "Horror/PlayerOutput" {
 Properties {
     _MainTex ("Base (RGB)", 2D) = "white" {}
 }
@@ -59,10 +59,10 @@ SubShader {
                 uint g = col.g * 255.0;
                 uint b = col.b * 255.0;
 
-                uint grey = (r + g + b) / 3;
-                r = (r + grey) / 2;
-                g = (g + grey) / 2;
-                b = (b + grey) / 2;
+                // uint grey = (r + g + b) / 3;
+                // r = (r + grey) / 2;
+                // g = (g + grey) / 2;
+                // b = (b + grey) / 2;
 
                 r = r / 8 * 8;
                 g = g / 8 * 8;

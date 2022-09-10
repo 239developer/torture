@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class Settings : MonoBehaviour
 {
-    public static float sensivity = 1.5f;
+    public static float sensivity = 60f;
 }

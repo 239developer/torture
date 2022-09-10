@@ -316,7 +316,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &305766714
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -649,11 +649,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  accelerationTime: 0.4
+  acceleration: 1
   sprintDuration: 7.5
   sprintSpeedMultiplier: 2
   sprintCDSpeed: 0.5
-  minStamina: 0.1
+  minStamina: 0.3
+  maxCameraTiltUp: 5
+  maxCameraTiltDown: 45
 --- !u!1 &790986202
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,9 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public Image staminaMeter;
+    public GameObject cameraPosition;
     public float speed = 2.0f;
     public float acceleration = 1f;
     public float sprintDuration = 7.5f;
@@ -13,10 +16,11 @@ public class PlayerController : MonoBehaviour
     public float minStamina = 0.3f;
     public float maxCameraTiltUp = 5f;
     public float maxCameraTiltDown = 45f;
+    public float shakeSprintMultiplier = 1.25f;
 
     private Rigidbody rb;
-    private GameObject camera_;
-    private float stamina = 0f;
+
+    public static float stamina = 0f;
     private bool isSprinting = false;
 
     void ApplyVelocity(float x, float z)
@@ -40,8 +44,8 @@ public class PlayerController : MonoBehaviour
     {
         //camera rotaion(looking up/down)
 
-        Vector3 axis = camera_.transform.TransformVector(Vector3.right);
-        Quaternion currentRotation = camera_.transform.rotation;
+        Vector3 axis = cameraPosition.transform.TransformVector(Vector3.right);
+        Quaternion currentRotation = cameraPosition.transform.rotation;
         Quaternion maxRotation = Quaternion.AngleAxis(-maxCameraTiltUp, axis) * transform.rotation;
         Quaternion minRotation = Quaternion.AngleAxis(maxCameraTiltDown, axis) * transform.rotation;
 
@@ -52,17 +56,17 @@ public class PlayerController : MonoBehaviour
         {
             currentAngle = beta - maxCameraTiltUp;
             if(currentAngle + angle < -maxCameraTiltUp)
-                camera_.transform.rotation = maxRotation;
+                cameraPosition.transform.rotation = maxRotation;
             else
-                camera_.transform.Rotate(Vector3.right, angle, Space.Self);
+                cameraPosition.transform.Rotate(Vector3.right, angle, Space.Self);
         }
         else
         {
             currentAngle = maxCameraTiltDown - alpha;
             if(currentAngle + angle > maxCameraTiltDown)
-                camera_.transform.rotation = minRotation;
+                cameraPosition.transform.rotation = minRotation;
             else
-                camera_.transform.Rotate(Vector3.right, angle, Space.Self);
+                cameraPosition.transform.Rotate(Vector3.right, angle, Space.Self);
         }
     }
 
@@ -72,11 +76,13 @@ public class PlayerController : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         // rb.interpolation = RigidbodyInterpolation.Extrapolate;
-        camera_ = GetComponentInChildren<Camera>().gameObject;
     }
 
     void Update()
     {
+        //Displaying stuff
+        staminaMeter.fillAmount = stamina;
+        
         //Sprint check
         if((stamina > minStamina || (stamina > 0f && isSprinting)) && Input.GetKey("left shift"))
         {

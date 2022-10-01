@@ -38,7 +38,7 @@ public class CameraShake : MonoBehaviour
         float t = (timer - lastShake) / shakeTime;
         transform.localPosition = Vector3.Slerp(a, b, t);
 
-        if(player.velocity.x != 0f || player.velocity.z != 0)
+        if(PlayerController.isWalking)
             timer += Time.deltaTime;
     }
 }

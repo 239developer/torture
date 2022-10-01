@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
 
     public static float stamina = 0f;
+    public static bool isFrozen = false;
+    public static bool isWalking = false;
     private bool isSprinting = false;
 
     void ApplyVelocity(float x, float z)
@@ -83,27 +85,30 @@ public class PlayerController : MonoBehaviour
         //Displaying stuff
         staminaMeter.fillAmount = stamina;
         
-        //Sprint check
-        if((stamina > minStamina || (stamina > 0f && isSprinting)) && Input.GetKey("left shift"))
+        if(!isFrozen)
         {
-            isSprinting = true;
-            stamina -= Time.deltaTime / sprintDuration;
-        }
-        else
-        {
-            isSprinting = false;
-            if(stamina < 1f)
-                stamina += Time.deltaTime * sprintCDSpeed;
-            else stamina = 1f;
-        }
+            //Sprint check
+            if((stamina > minStamina || (stamina > 0f && isSprinting)) && Input.GetKey("left shift") && isWalking)
+            {
+                isSprinting = true;
+                stamina -= Time.deltaTime / sprintDuration;
+            }
+            else
+            {
+                isSprinting = false;
+                if(stamina < 1f)
+                    stamina += Time.deltaTime * sprintCDSpeed;
+                else stamina = 1f;
+            }
 
-        //Rotation
-        float sensivity = Settings.sensivity;
-        float alpha = Input.GetAxis("Mouse X") * sensivity * Time.deltaTime;
-        float beta = -Input.GetAxis("Mouse Y") * sensivity * Time.deltaTime * 0.5625f;
+            //Rotation
+            float sensivity = Settings.sensivity;
+            float alpha = Input.GetAxis("Mouse X") * sensivity * Time.deltaTime;
+            float beta = -Input.GetAxis("Mouse Y") * sensivity * Time.deltaTime * 0.5625f;
 
-        ApplyPlayerRotation(alpha);
-        ApplyCameraRotation(beta);
+            ApplyPlayerRotation(alpha);
+            ApplyCameraRotation(beta);
+        }
     }
 
     void FixedUpdate()
@@ -114,6 +119,8 @@ public class PlayerController : MonoBehaviour
         float dz = Input.GetAxis("Vertical") * speed;
         dz *= isSprinting ? sprintSpeedMultiplier : 1;
 
-        ApplyVelocity(dx, dz);
+        if(!isFrozen)
+            ApplyVelocity(dx, dz);
+        isWalking = !isFrozen && (dx != 0 || dz != 0);
     }
 }

@@ -46,10 +46,10 @@ public class PlayerController : MonoBehaviour
     {
         //camera rotaion(looking up/down)
 
-        Vector3 axis = cameraPosition.transform.TransformVector(Vector3.right);
+        Vector3 axis = Vector3.right;
         Quaternion currentRotation = cameraPosition.transform.rotation;
-        Quaternion maxRotation = Quaternion.AngleAxis(-maxCameraTiltUp, axis) * transform.rotation;
-        Quaternion minRotation = Quaternion.AngleAxis(maxCameraTiltDown, axis) * transform.rotation;
+        Quaternion maxRotation = transform.rotation * Quaternion.AngleAxis(-maxCameraTiltUp, axis);
+        Quaternion minRotation = transform.rotation * Quaternion.AngleAxis(maxCameraTiltDown, axis);
 
         float alpha = Quaternion.Angle(currentRotation, minRotation);
         float beta = Quaternion.Angle(currentRotation, maxRotation);

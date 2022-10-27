@@ -14,16 +14,19 @@ public class InspectingStuff : MonoBehaviour
     private Rigidbody rb;
 
     private const string holdableTag = "Holdable";
+    private const string doorTag = "Door";
 
-    private GameObject FindObjectToInspect()
+    private GameObject GetObjectFromRaycast(out float distance)
     {
         Vector3 origin = cameraPosition.transform.position;
         Vector3 direction = cameraPosition.transform.forward;
         RaycastHit hit;
         if(Physics.Raycast(origin, direction, out hit))
-            if(hit.collider.tag == holdableTag && hit.distance < grabDistance)
-                return hit.collider.gameObject;
-
+        {
+            distance = hit.distance;
+            return hit.collider.gameObject;
+        }
+        distance = -1f;
         return null;
     }
 
@@ -31,13 +34,23 @@ public class InspectingStuff : MonoBehaviour
     {
         if(heldObject == null && Input.GetKeyDown(KeyCode.E))
         {
-            heldObject = FindObjectToInspect();
-            if(heldObject != null)
+            float distance;
+            GameObject obj = GetObjectFromRaycast(out distance);
+            switch(obj.tag)
             {
-                originalPosition = heldObject.transform.position;
-                originalRotation = heldObject.transform.rotation;
-                PlayerController.isFrozen = true;
-                Time.timeScale = 0f;
+                case holdableTag:
+                    heldObject = distance < grabDistance ? obj : null;
+                    if(heldObject != null)
+                    {
+                        originalPosition = heldObject.transform.position;
+                        originalRotation = heldObject.transform.rotation;
+                        PlayerController.isFrozen = true;
+                        Time.timeScale = 0f;
+                    }
+                    break;
+                case doorTag:
+                    obj.GetComponentInParent<DoorController>().ChangeState();
+                    break;
             }
         }
         else if(heldObject != null)

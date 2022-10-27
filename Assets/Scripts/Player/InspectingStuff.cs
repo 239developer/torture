@@ -15,6 +15,7 @@ public class InspectingStuff : MonoBehaviour
 
     private const string holdableTag = "Holdable";
     private const string doorTag = "Door";
+    private const string keyTag = "Key";
 
     private GameObject GetObjectFromRaycast(out float distance)
     {
@@ -50,6 +51,10 @@ public class InspectingStuff : MonoBehaviour
                     break;
                 case doorTag:
                     obj.GetComponentInParent<DoorController>().ChangeState();
+                    break;
+                case keyTag:
+                    DoorController.foundKeys[obj.GetComponentInParent<KeyInfo>().id] = true;
+                    obj.GetComponentInParent<KeyInfo>().Destroy();
                     break;
             }
         }

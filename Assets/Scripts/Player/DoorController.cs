@@ -8,14 +8,16 @@ public class DoorController : MonoBehaviour
     public float maxAngle = 90f;
     public bool clockwise = false; //direction in which the door opens
     public bool isOpen = true;
-    public bool isLocked = false;
+    public int keyID = 0;
 
     private float currentAngle = 0f;
     private float targetAngle = 0f;
 
+    public static bool[] foundKeys = new bool[16];
+
     public void ChangeState()
     {
-        if(!isLocked)
+        if(foundKeys[keyID])
         {
             if(targetAngle == 0f)
                 targetAngle = maxAngle * (clockwise ? 1 : -1);
@@ -28,6 +30,7 @@ public class DoorController : MonoBehaviour
     {
         targetAngle = isOpen ? maxAngle * (clockwise ? 1 : -1) : 0f;
         currentAngle = targetAngle;
+        foundKeys[0] = true;
     }
 
     void Update()
